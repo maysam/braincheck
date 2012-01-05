@@ -36,10 +36,10 @@
 			alphable[i][j] = randomstring;
 		}
 	}
-	/*
+	
 // returns a boolean
 var audioTagSupport = !!(document.createElement('audio').canPlayType);
-or check file type compatibility:
+//or check file type compatibility:
 
 // Need to check the canPlayType first or an exception
     // will be thrown for those browsers that don't support it      
@@ -53,7 +53,10 @@ or check file type compatibility:
        var canPlayMp3 = !!myAudio.canPlayType && "" != myAudio.canPlayType('audio/mpeg');
        var canPlayOgg = !!myAudio.canPlayType && "" != myAudio.canPlayType('audio/ogg; codecs="vorbis"');
     }
-    */
+    myAudio.src = 'sound/a.ogg';
+    myAudio.onload = function() {
+			myAudio.play();
+	}
 	for(i=0;i<cols;i++)
 	{		
 		var left = 70 + i*60;
