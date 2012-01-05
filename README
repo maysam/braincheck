@@ -1,2 +1,5 @@
 braincheck is written in html5
 it's a game for kids to find words in letter tables 
+
+for i in *; do sox $i new_$i trim 0 1; done;
+
