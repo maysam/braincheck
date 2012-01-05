@@ -1,0 +1,74 @@
+
+<canvas id="panel" width=1024 height=580 style="background-color:#ffeedd;">
+</canvas>
+<script>
+    var canvas = document.getElementById("panel");
+    var context = canvas.getContext("2d");
+
+	var dora_waiting_image = new Image();
+	dora_waiting_image.src = 'dora-waiting.jpg';
+	var dora_happy_image = new Image();
+	dora_happy_image.src = 'dora-happy.jpg';
+	var dora_mode = 'happy';
+	window.onload = function() {
+	if(dora_mode == 'happy')
+	{
+		context.drawImage(dora_happy_image, 10, 10, 256, 256);
+		dora_mode = 'waiting';
+	}
+	else
+	{
+		dora_mode = 'happy';
+		context.drawImage(dora_waiting_image, 10, 10 , 256, 256);
+	}
+	
+	var rows = 5;
+	var cols = 15;
+	var chars = "ABCDEFGHIJKLMNOPQRSTUVWXTZ"; // "abcdefghiklmnopqrstuvwxyz";
+	var alphable = new Array(rows);
+	for(i=0;i<cols;i++)
+	{
+		alphable[i] = new Array(cols);
+		for(j=0; j<rows; j++)
+		{
+			var rnum = Math.floor(Math.random() * chars.length);
+			randomstring = chars.substring(rnum,rnum+1);
+			alphable[i][j] = randomstring;
+		}
+	}
+	/*
+// returns a boolean
+var audioTagSupport = !!(document.createElement('audio').canPlayType);
+or check file type compatibility:
+
+// Need to check the canPlayType first or an exception
+    // will be thrown for those browsers that don't support it      
+
+    var myAudio = document.createElement('audio'); 
+    
+    if (myAudio.canPlayType) {
+      
+       // Currently canPlayType(type) returns: "", "maybe" or "probably" 
+
+       var canPlayMp3 = !!myAudio.canPlayType && "" != myAudio.canPlayType('audio/mpeg');
+       var canPlayOgg = !!myAudio.canPlayType && "" != myAudio.canPlayType('audio/ogg; codecs="vorbis"');
+    }
+    */
+	for(i=0;i<cols;i++)
+	{		
+		var left = 70 + i*60;
+		for(j=0; j<rows; j++)
+		{
+			var top = 256 + 20 + j*60;
+			context.fillStyle = "white";
+			context.fillRect(left,top,45,45);
+			context.fillStyle = "navy";
+			context.textBaseline = "top";
+			context.font = "bold 48px Verdana"
+
+			context.fillText(alphable[i][j], left+5, top-5, 45, 45);
+			//context.drawRectangle(left, top, 15, 15);
+		}
+	}
+}
+</script>
