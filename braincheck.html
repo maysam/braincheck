@@ -1,4 +1,3 @@
-
 <canvas id="panel" width=1024 height=580 style="background-color:#ffeedd;">
 </canvas>
 <script>
@@ -10,41 +9,33 @@
 	var dora_happy_image = new Image();
 	dora_happy_image.src = 'dora-happy.jpg';
 	var dora_mode = 'happy';
-	window.onload = function() {
-	if(dora_mode == 'happy')
-	{
-		context.drawImage(dora_happy_image, 10, 10, 256, 256);
-		dora_mode = 'waiting';
-	}
-	else
-	{
-		dora_mode = 'happy';
-		context.drawImage(dora_waiting_image, 10, 10 , 256, 256);
-	}
 	
 	var rows = 5;
 	var cols = 15;
 	var chars = "ABCDEFGHIJKLMNOPQRSTUVWXTZ"; // "abcdefghiklmnopqrstuvwxyz";
 	var alphable = new Array(rows);
+	var alphasound = new Array(26);
+	for(i=0; i<26; i++)
+	{
+		alphasound[i] = new Audio('sound/' + String.fromCharCode(97+i) + '.ogg');
+	}
 	for(i=0;i<cols;i++)
 	{
 		alphable[i] = new Array(cols);
 		for(j=0; j<rows; j++)
 		{
-			var rnum = Math.floor(Math.random() * chars.length);
-			randomstring = chars.substring(rnum,rnum+1);
-			alphable[i][j] = randomstring;
+			alphable[i][j] = Math.floor(Math.random() * chars.length);
 		}
 	}
-	
-// returns a boolean
-var audioTagSupport = !!(document.createElement('audio').canPlayType);
-//or check file type compatibility:
+		
+	// returns a boolean
+	var audioTagSupport = !!(document.createElement('audio').canPlayType);
+	//or check file type compatibility:
 
-// Need to check the canPlayType first or an exception
+	// Need to check the canPlayType first or an exception
     // will be thrown for those browsers that don't support it      
 
-    var myAudio = document.createElement('audio'); 
+    myAudio = new Audio();
     
     if (myAudio.canPlayType) {
       
@@ -52,26 +43,70 @@ var audioTagSupport = !!(document.createElement('audio').canPlayType);
 
        var canPlayMp3 = !!myAudio.canPlayType && "" != myAudio.canPlayType('audio/mpeg');
        var canPlayOgg = !!myAudio.canPlayType && "" != myAudio.canPlayType('audio/ogg; codecs="vorbis"');
-    }
-    myAudio.src = 'sound/a.ogg';
+    }	
     myAudio.onload = function() {
-			myAudio.play();
+		console.log('loaded');
+		myAudio.play();
+		console.log('played');
 	}
-	for(i=0;i<cols;i++)
-	{		
-		var left = 70 + i*60;
-		for(j=0; j<rows; j++)
+    myAudio.src = 'sound/a.ogg';
+	console.log(myAudio.src );
+	change_dora_mode = function() {
+		if(dora_mode == 'happy')
 		{
-			var top = 256 + 20 + j*60;
-			context.fillStyle = "white";
-			context.fillRect(left,top,45,45);
-			context.fillStyle = "navy";
-			context.textBaseline = "top";
-			context.font = "bold 48px Verdana"
-
-			context.fillText(alphable[i][j], left+5, top-5, 45, 45);
-			//context.drawRectangle(left, top, 15, 15);
+			context.drawImage(dora_happy_image, 10, 10, 256, 256);
+			dora_mode = 'waiting';
+		}
+		else
+		{
+			dora_mode = 'happy';
+			context.drawImage(dora_waiting_image, 10, 10 , 256, 256);
 		}
 	}
-}
+	canvas.onclick = function () { 		
+        var x = event.pageX - canvas.offsetLeft;
+        var y = event.pageY - canvas.offsetTop;
+		
+		if(10<x && 10<y && x<256 && y<256)
+			change_dora_mode();
+		x = (x - 70)/60;
+		y = (y - 256 - 20)/60;
+		i = Math.floor(x);
+		j = Math.floor(y);
+		console.log('x = ' + x + ' y = ' + y );
+		console.log('i = ' + i + ' j = ' + j );
+		if( x - i < 0.75)
+		if( y - j < 0.75)
+			alphasound[alphable[i][j]].play(); 
+	};
+	window.onload = function() {
+		if(dora_mode == 'happy')
+		{
+			context.drawImage(dora_happy_image, 10, 10, 256, 256);
+			dora_mode = 'waiting';
+		}
+		else
+		{
+			dora_mode = 'happy';
+			context.drawImage(dora_waiting_image, 10, 10 , 256, 256);
+		}
+		
+		for(i=0;i<cols;i++)
+		{		
+			var left = 70 + i*60;
+			for(j=0; j<rows; j++)
+			{
+				var top = 256 + 20 + j*60;
+				context.fillStyle = "white";
+				context.fillRect(left,top,45,45);
+				context.fillStyle = "navy";
+				context.textBaseline = "top";
+				//context.textAlign = "right";
+				context.font = "bold 36px Verdana"
+
+				context.fillText(String.fromCharCode(65+alphable[i][j]), left+5, top-5, 45, 45);
+				//context.drawRectangle(left, top, 15, 15);
+			}
+		}
+	}
 </script>
