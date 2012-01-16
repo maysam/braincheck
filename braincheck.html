@@ -79,6 +79,23 @@
 		if( y - j < 0.75)
 			alphasound[alphable[i][j]].play(); 
 	};
+	
+	canvas.onhover = function () { 		
+        var x = event.pageX - canvas.offsetLeft;
+        var y = event.pageY - canvas.offsetTop;
+		
+		if(10<x && 10<y && x<256 && y<256)
+			change_dora_mode();
+		x = (x - 70)/60;
+		y = (y - 256 - 20)/60;
+		i = Math.floor(x);
+		j = Math.floor(y);
+		console.log('x = ' + x + ' y = ' + y );
+		console.log('i = ' + i + ' j = ' + j );
+		if( x - i < 0.75)
+		if( y - j < 0.75)
+			alphasound[alphable[i][j]].play(); 
+	};
 	window.onload = function() {
 		if(dora_mode == 'happy')
 		{
